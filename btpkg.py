@@ -24,8 +24,13 @@ SHORT_HELP = 'Copy /fboss from fml tier to darkstorm isilons'
 
 class CliOptions():
     ''' Object for holding CLI state information '''
-    def __init__(self, debug):
+    def __init__(self, debug, start_time):
         self.debug = debug
+        self.start_time = start_time
+        logging.debug("{} started @ {}".format(
+            sys.argv[0],
+            time.strftime('%Y%m%d%H%M%S', time.gmtime(start_time)))
+        )
 
     def __repr__(self):
         ''' String Representation for debugging '''
@@ -64,16 +69,7 @@ def _handle_debug(ctx, param, debug):
 def main(ctx, debug):
     ''' Lets build and fetch blobs over bitorrent '''
     # Class to hold all global options
-    ctx.obj = CliOptions(debug)
-    start_time = time.time()
-    logging.debug("{} started @ {}".format(
-        sys.argv[0],
-        time.strftime('%Y%m%d%H%M%S', time.gmtime(start_time)))
-    )
-    logging.info("{} ran for {} seconds".format(
-        sys.argv[0],
-        time.time() - start_time,
-    ))
+    ctx.obj = CliOptions(debug, time.time())
 
 
 def add_internal_modules():

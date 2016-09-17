@@ -16,10 +16,16 @@ import btpkg
 class BuildCli():
 
     @click.command()
+    @click.option(
+        '-y',
+        '--yes',
+        help='Auto confirm ...',
+        is_flag=True,
+    )
     @click.pass_obj
-    def build(cli_opts):
+    def build(cli_opts, yes):
         ''' Build a btpkg package and upload to seeders '''
-        BuildBtpkg(cli_opts).run()
+        BuildBtpkg(cli_opts).run(yes)
 
 
 class BuildBtpkg(btpkg.BtpkgCmd):
@@ -28,7 +34,8 @@ class BuildBtpkg(btpkg.BtpkgCmd):
     def __init__(self, cli_opts):
         super().__init__(cli_opts)
 
-    def run(self):
+    def run(self, yes):
         click.echo("Building the future of distrib systems - Debug = {}".format(
             self.options.debug
         ))
+        click.echo("Yes = {}".format(yes))
